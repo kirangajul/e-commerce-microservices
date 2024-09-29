@@ -33,16 +33,20 @@ import java.util.List;
 )
 public class UserAuth {
 
-    private final UserService userService;
-    private final JwtProvider jwtProvider;
+	 private final UserService userService;
+	    private final JwtProvider jwtProvider;
+	    private final TokenValidate tokenValidate;
+	    private final AuthorityTokenUtil authorityTokenUtil;
 
     @Autowired
     private EmailService emailService;
 
     @Autowired
-    public UserAuth(UserService userService, JwtProvider jwtProvider) {
+    public UserAuth(UserService userService, JwtProvider jwtProvider, TokenValidate tokenValidate, AuthorityTokenUtil authorityTokenUtil) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
+        this.tokenValidate = tokenValidate;
+        this.authorityTokenUtil = authorityTokenUtil;
     }
 
     @ApiOperation(value = "Register a new user", notes = "Registers a new user with the provided details.")
@@ -128,13 +132,12 @@ public class UserAuth {
             @ApiResponse(code = 401, message = "Unauthorized", response = TokenValidationResponse.class)
     })
     @GetMapping({"/validateToken", "/validate-token"})
-    public Boolean validateToken(@RequestHeader(name = "Authorization") String authorizationToken) {
-        TokenValidate validate = new TokenValidate();
-        if (validate.validateToken(authorizationToken)) {
-            return ResponseEntity.ok(new TokenValidationResponse("Valid token")).hasBody();
+    public ResponseEntity<TokenValidationResponse> validateToken(@RequestHeader(name = "Authorization") String authorizationToken) {
+        if (tokenValidate.validateToken(authorizationToken)) {
+            return ResponseEntity.ok(new TokenValidationResponse("Valid token"));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new TokenValidationResponse("Invalid token")).hasBody();
+                    .body(new TokenValidationResponse("Invalid token"));
         }
     }
 
@@ -148,6 +151,8 @@ public class UserAuth {
                                 String requiredRole) {
         AuthorityTokenUtil authorityTokenUtil = new AuthorityTokenUtil();
         List<String> authorities = authorityTokenUtil.checkPermission(authorizationToken);
+        log.info("Extracted Authorities: " + authorities);
+        log.info("Required Role: " + requiredRole);
 
         if (authorities.contains(requiredRole)) {
             return ResponseEntity.ok(new TokenValidationResponse("Role access api")).hasBody();

@@ -2,12 +2,12 @@ package com.hoangtien2k3.orderservice.api;
 
 import com.hoangtien2k3.orderservice.dto.order.OrderDto;
 import com.hoangtien2k3.orderservice.service.OrderService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +30,10 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @ApiOperation(value = "Get all orders", notes = "Retrieve a list of all orders.")
+    @Operation(summary = "Get all orders", description = "Retrieve a list of all orders.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Orders retrieved successfully", response = List.class),
-            @ApiResponse(code = 204, message = "No content", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Orders retrieved successfully"),
+            @ApiResponse(responseCode = "204", description = "No content")
     })
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
@@ -44,10 +44,10 @@ public class OrderController {
                 .defaultIfEmpty(ResponseEntity.ok(Collections.emptyList()));
     }
 
-    @ApiOperation(value = "Get all orders with paging", notes = "Retrieve a paginated list of all orders.")
+    @Operation(summary = "Get all orders with paging", description = "Retrieve a paginated list of all orders.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Orders retrieved successfully", response = Page.class),
-            @ApiResponse(code = 204, message = "No content", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Orders retrieved successfully"),
+            @ApiResponse(responseCode = "204", description = "No content")
     })
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
@@ -60,24 +60,26 @@ public class OrderController {
                 .defaultIfEmpty(ResponseEntity.noContent().build());
     }
 
-    @ApiOperation(value = "Get order by ID", notes = "Retrieve order information based on the provided ID.")
+    @Operation(summary = "Get order by ID", description = "Retrieve order information based on the provided ID.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Order retrieved successfully", response = OrderDto.class),
-            @ApiResponse(code = 404, message = "Order not found", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Order retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     @GetMapping("/{orderId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<Mono<OrderDto>> findById(@PathVariable("orderId")
+    public Mono<ResponseEntity<OrderDto>> findById(@PathVariable("orderId")
                                                    @NotBlank(message = "Input must not be blank")
                                                    @Valid final String orderId) {
         log.info("*** OrderDto, resource; fetch order by id *");
-        return ResponseEntity.ok(orderService.findById(Integer.parseInt(orderId)));
+        return orderService.findById(Integer.parseInt(orderId))
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Save order", notes = "Save a new order.")
+    @Operation(summary = "Save order", description = "Save a new order.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Order saved successfully", response = OrderDto.class),
-            @ApiResponse(code = 500, message = "Internal Server Error", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Order saved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
@@ -90,10 +92,10 @@ public class OrderController {
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
-    @ApiOperation(value = "Update order", notes = "Update an existing order.")
+    @Operation(summary = "Update order", description = "Update an existing order.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Order updated successfully", response = OrderDto.class),
-            @ApiResponse(code = 404, message = "Order not found", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Order updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -106,10 +108,10 @@ public class OrderController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Update order by ID", notes = "Update an existing order based on the provided ID.")
+    @Operation(summary = "Update order by ID", description = "Update an existing order based on the provided ID.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Order updated successfully", response = OrderDto.class),
-            @ApiResponse(code = 404, message = "Order not found", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Order updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     @PutMapping("/{orderId}")
     @PreAuthorize("hasAuthority('USER')")
@@ -125,25 +127,23 @@ public class OrderController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Delete order by ID", notes = "Delete an order based on the provided ID.")
+    @Operation(summary = "Delete order by ID", description = "Delete an order based on the provided ID.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Order deleted successfully", response = Boolean.class),
-            @ApiResponse(code = 404, message = "Order not found", response = ResponseEntity.class)
+            @ApiResponse(responseCode = "200", description = "Order deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     @DeleteMapping("/{orderId}")
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<Boolean>> deleteById(@PathVariable("orderId") final String orderId) {
         log.info("*** Boolean, resource; delete order by id *");
-        this.orderService.deleteById(Integer.parseInt(orderId));
         return orderService.deleteById(Integer.parseInt(orderId))
                 .thenReturn(ResponseEntity.ok(true))
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).body(false));
     }
 
-
+    @Operation(summary = "Check if order exists by ID", description = "Check if an order exists based on the provided ID.")
     @GetMapping("/existOrderId")
-    public Boolean existsByOrderId(Integer orderId) {
-        return orderService.existsByOrderId(orderId);
+    public Mono<Boolean> existsByOrderId(@RequestParam("orderId") Integer orderId) {
+        return Mono.just(orderService.existsByOrderId(orderId));
     }
-
 }

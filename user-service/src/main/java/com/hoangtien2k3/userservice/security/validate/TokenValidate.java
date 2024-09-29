@@ -1,26 +1,38 @@
 package com.hoangtien2k3.userservice.security.validate;
 
-import io.jsonwebtoken.*;
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class TokenValidate {
 
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private final SecretKey jwtSecret;
+
+    public TokenValidate(@Value("${jwt.secret}") String secret) {
+        if (secret == null || secret.isEmpty()) {
+            throw new IllegalArgumentException("Not found secret key in structure");
+        }
+        this.jwtSecret = Keys.hmacShaKeyFor(secret.getBytes());  // Convert to SecretKey
+    }
 
     public boolean validateToken(String token) {
-        if (SECRET_KEY == null || SECRET_KEY.isEmpty())
-            throw new IllegalArgumentException("Not found secret key in structure");
-
-        if (token.startsWith("Bearer "))
+        if (token.startsWith("Bearer ")) {
             token = token.replace("Bearer ", "");
+        }
 
         try {
-            Claims claims = Jwts
-                    .parser()
-                    .setSigningKey(SECRET_KEY)
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(jwtSecret)  // Use SecretKey instance
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
 
@@ -36,5 +48,4 @@ public class TokenValidate {
             throw new IllegalArgumentException("Token validation error: " + ex.getMessage());
         }
     }
-
 }

@@ -162,7 +162,12 @@ public class UserServiceImpl implements UserService {
                             .roles(userPrinciple.roles())
                             .build())
                     .build();
-        }).onErrorResume(Mono::error);
+        }).onErrorResume(e -> {
+            // Log detailed error information
+            System.err.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
+            return Mono.empty(); // or Mono.error(e) if you want to propagate the error
+        });
     }
 
 

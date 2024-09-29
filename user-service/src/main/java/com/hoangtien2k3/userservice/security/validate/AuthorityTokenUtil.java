@@ -3,10 +3,12 @@ package com.hoangtien2k3.userservice.security.validate;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class AuthorityTokenUtil {
 
     @Value("${jwt.secret}")

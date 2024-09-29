@@ -1,11 +1,14 @@
 package com.hoangtien2k3.inventoryservice.security;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.hoangtien2k3.inventoryservice.dto.response.TokenValidationResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -27,16 +30,16 @@ public class JwtValidate {
         String jwtToken = authorizationHeader.replace("Bearer ", "");
 
         // Token hợp lệ, tiếp tục gọi API từ user-service
-        Boolean responseToken = webClientBuilder.baseUrl(userServiceBaseUrl + "/api/auth")
+        TokenValidationResponse responseToken = webClientBuilder.baseUrl(userServiceBaseUrl + "/api/auth")
                 .build()
                 .get()
                 .uri("/validateToken")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
                 .retrieve()
-                .bodyToMono(Boolean.class)
+                .bodyToMono(TokenValidationResponse.class)
                 .block();
 
-        return responseToken;
+        return responseToken != null && "Valid token".equals(responseToken.getMessage());
 
     }
 

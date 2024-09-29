@@ -33,9 +33,11 @@ public class InventoryController {
     public List<InventoryResponse> isInStockNoAccessToken(@RequestHeader(name = "Authorization") String authorizationHeader,
                                                           @RequestParam List<String> productName) {
         if (jwtValidate.validateTokenUserService(authorizationHeader)) {
+        	System.out.println("token is valid");
             log.info("Received inventory check request for skuCode: {}", productName);
             return inventoryService.isInStock(productName);
         }
+        System.out.println("token is invalid");
         return List.of(new InventoryResponse(null, false));
     }
 

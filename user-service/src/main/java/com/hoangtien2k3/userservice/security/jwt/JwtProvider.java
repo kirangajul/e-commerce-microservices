@@ -1,28 +1,43 @@
 package com.hoangtien2k3.userservice.security.jwt;
 
-import com.hoangtien2k3.userservice.security.userprinciple.UserPrinciple;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.*;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.crypto.SecretKey;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.security.core.GrantedAuthority;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
+
+import com.hoangtien2k3.userservice.security.userprinciple.UserPrinciple;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private final SecretKey jwtSecret;
     @Value("${jwt.expiration}")
     private int jwtExpiration;
     @Value("${jwt.refreshExpiration}")
     private int jwtRefreshExpiration;
+
+    public JwtProvider(@Value("${jwt.secret}") String secret) {
+        // Create the key from the provided secret
+        this.jwtSecret = Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public String createToken(Authentication authentication) {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
@@ -36,7 +51,7 @@ public class JwtProvider {
                 .claim("authorities", authorities)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpiration * 1000L))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(jwtSecret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -45,32 +60,31 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(userPrinciple.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtRefreshExpiration * 1000L)) // jwtRefreshExpiration là thời gian hiệu lực của refresh token
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(new Date(new Date().getTime() + jwtRefreshExpiration * 1000L))
+                .signWith(jwtSecret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String reduceTokenExpiration(String token) {
-        // Decode the token to extract its claims
-        Claims claims = Jwts.parser()
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(jwtSecret)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        // Reduce the expiration time by setting it to a past date
         claims.setExpiration(new Date(0));
 
-        // Build a new token with the updated expiration time
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(jwtSecret, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public Boolean validateToken(String token) {
         try {
-            Jwts.parser()
+            Jwts.parserBuilder()
                     .setSigningKey(jwtSecret)
+                    .build()
                     .parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
@@ -89,8 +103,9 @@ public class JwtProvider {
 
     public String getUserNameFromToken(String token) {
         try {
-            Claims claims = Jwts.parser()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(jwtSecret)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
 
@@ -99,5 +114,4 @@ public class JwtProvider {
             return null;
         }
     }
-
 }

@@ -3,9 +3,8 @@ package com.hoangtien2k3.orderservice.api;
 import com.hoangtien2k3.orderservice.dto.order.CartDto;
 import com.hoangtien2k3.orderservice.service.CartService;
 import com.hoangtien2k3.orderservice.service.CallAPI;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,11 +34,11 @@ public class CartController {
     @Autowired
     private CallAPI testCallApi;
 
-    @ApiOperation(value = "Get all carts", notes = "Retrieve a list of all carts.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Carts retrieved successfully", response = List.class),
-            @ApiResponse(code = 204, message = "No content", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Get all carts", description = "Retrieve a list of all carts.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Carts retrieved successfully"),
+            @ApiResponse(responseCode = "204", description = "No content")
+        })
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public Mono<ResponseEntity<List<CartDto>>> findAll() {
@@ -49,11 +48,11 @@ public class CartController {
                 .defaultIfEmpty(ResponseEntity.ok(Collections.emptyList()));
     }
 
-    @ApiOperation(value = "Get all carts with paging", notes = "Retrieve a paginated list of all carts.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Carts retrieved successfully", response = Page.class),
-            @ApiResponse(code = 204, message = "No content", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Get all carts with paging", description = "Retrieve a paginated list of all carts.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Carts retrieved successfully"),
+            @ApiResponse(responseCode = "204", description = "No content")
+        })
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public Mono<ResponseEntity<Page<CartDto>>> findAll(@RequestParam(defaultValue = "0") int page,
@@ -65,11 +64,11 @@ public class CartController {
                 .defaultIfEmpty(ResponseEntity.noContent().build());
     }
 
-    @ApiOperation(value = "Get cart by ID", notes = "Retrieve cart information based on the provided ID.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cart retrieved successfully", response = CartDto.class),
-            @ApiResponse(code = 404, message = "Cart not found", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Get cart by ID", description = "Retrieve cart information based on the provided ID.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cart retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Cart not found")
+        })
     @GetMapping("/{cartId}")
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<Mono<CartDto>> findById(@PathVariable("cartId")
@@ -79,12 +78,11 @@ public class CartController {
         return ResponseEntity.ok(this.cartService.findById(Integer.parseInt(cartId)));
     }
 
-
-    @ApiOperation(value = "Save cart", notes = "Save a new cart.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cart saved successfully", response = CartDto.class),
-            @ApiResponse(code = 500, message = "Internal Server Error", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Save cart", description = "Save a new cart.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cart saved successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        })
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
     public Mono<ResponseEntity<CartDto>> save(@RequestBody
@@ -96,11 +94,11 @@ public class CartController {
                 .defaultIfEmpty(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
-    @ApiOperation(value = "Update cart", notes = "Update an existing cart.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cart updated successfully", response = CartDto.class),
-            @ApiResponse(code = 404, message = "Cart not found", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Update cart", description = "Update an existing cart.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cart updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Cart not found")
+        })
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity<CartDto>> update(@RequestBody
@@ -112,11 +110,11 @@ public class CartController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Update cart by ID", notes = "Update an existing cart based on the provided ID.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cart updated successfully", response = CartDto.class),
-            @ApiResponse(code = 404, message = "Cart not found", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Update cart by ID", description = "Update an existing cart based on the provided ID.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cart updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Cart not found")
+        })
     @PutMapping("/{cartId}")
     @PreAuthorize("hasAuthority('USER')")
     public Mono<ResponseEntity<CartDto>> update(@PathVariable("cartId")
@@ -131,11 +129,11 @@ public class CartController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @ApiOperation(value = "Delete cart by ID", notes = "Delete a cart based on the provided ID.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cart deleted successfully", response = Boolean.class),
-            @ApiResponse(code = 404, message = "Cart not found", response = ResponseEntity.class)
-    })
+    @Operation(summary = "Delete cart by ID", description = "Delete a cart based on the provided ID.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Cart deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Cart not found")
+        })
     @DeleteMapping("/{cartId}")
     @PreAuthorize("hasAuthority('USER')")
     public Mono<ResponseEntity<Boolean>> deleteById(@PathVariable("cartId") final String cartId) {
