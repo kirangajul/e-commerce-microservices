@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.config.client;
+package com.kirangajul.orderservice.config.client;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

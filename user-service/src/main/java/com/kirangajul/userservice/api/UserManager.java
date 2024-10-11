@@ -1,14 +1,5 @@
-package com.hoangtien2k3.userservice.api;
+package com.kirangajul.userservice.api;
 
-import com.hoangtien2k3.userservice.exception.wrapper.TokenErrorOrAccessTimeOut;
-import com.hoangtien2k3.userservice.exception.wrapper.UserNotFoundException;
-import com.hoangtien2k3.userservice.http.HeaderGenerator;
-import com.hoangtien2k3.userservice.model.dto.request.ChangePasswordRequest;
-import com.hoangtien2k3.userservice.model.dto.request.SignUp;
-import com.hoangtien2k3.userservice.model.dto.request.UserDto;
-import com.hoangtien2k3.userservice.model.dto.response.ResponseMessage;
-import com.hoangtien2k3.userservice.security.jwt.JwtProvider;
-import com.hoangtien2k3.userservice.service.UserService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,6 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import com.kirangajul.userservice.exception.wrapper.TokenErrorOrAccessTimeOut;
+import com.kirangajul.userservice.exception.wrapper.UserNotFoundException;
+import com.kirangajul.userservice.http.HeaderGenerator;
+import com.kirangajul.userservice.model.dto.request.ChangePasswordRequest;
+import com.kirangajul.userservice.model.dto.request.SignUp;
+import com.kirangajul.userservice.model.dto.request.UserDto;
+import com.kirangajul.userservice.model.dto.response.ResponseMessage;
+import com.kirangajul.userservice.security.jwt.JwtProvider;
+import com.kirangajul.userservice.service.UserService;
+
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;

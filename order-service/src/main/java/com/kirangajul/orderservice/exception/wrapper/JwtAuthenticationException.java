@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.exception.wrapper;
+package com.kirangajul.orderservice.exception.wrapper;
 
 import java.io.Serial;
 

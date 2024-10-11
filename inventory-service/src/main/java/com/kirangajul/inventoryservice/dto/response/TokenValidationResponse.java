@@ -1,4 +1,4 @@
-package com.hoangtien2k3.inventoryservice.dto.response;
+package com.kirangajul.inventoryservice.dto.response;
 
 public class TokenValidationResponse {
     private String message;

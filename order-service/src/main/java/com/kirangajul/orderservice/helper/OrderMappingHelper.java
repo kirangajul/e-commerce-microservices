@@ -1,10 +1,10 @@
-package com.hoangtien2k3.orderservice.helper;
+package com.kirangajul.orderservice.helper;
 
-import com.hoangtien2k3.orderservice.dto.order.CartDto;
-import com.hoangtien2k3.orderservice.dto.order.OrderDto;
-import com.hoangtien2k3.orderservice.dto.product.ProductDto;
-import com.hoangtien2k3.orderservice.entity.Cart;
-import com.hoangtien2k3.orderservice.entity.Order;
+import com.kirangajul.orderservice.dto.order.CartDto;
+import com.kirangajul.orderservice.dto.order.OrderDto;
+import com.kirangajul.orderservice.dto.product.ProductDto;
+import com.kirangajul.orderservice.entity.Cart;
+import com.kirangajul.orderservice.entity.Order;
 
 public interface OrderMappingHelper {
     static OrderDto map(Order order) {

@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.security.jwt;
+package com.kirangajul.userservice.security.jwt;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import com.hoangtien2k3.userservice.security.userprinciple.UserPrinciple;
+import com.kirangajul.userservice.security.userprinciple.UserPrinciple;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

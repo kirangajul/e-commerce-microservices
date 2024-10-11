@@ -1,12 +1,12 @@
-package com.hoangtien2k3.orderservice.helper;
-
-import com.hoangtien2k3.orderservice.dto.order.CartDto;
-import com.hoangtien2k3.orderservice.dto.order.OrderDto;
-import com.hoangtien2k3.orderservice.dto.user.UserDto;
-import com.hoangtien2k3.orderservice.entity.Cart;
-import com.hoangtien2k3.orderservice.entity.Order;
+package com.kirangajul.orderservice.helper;
 
 import java.util.stream.Collectors;
+
+import com.kirangajul.orderservice.dto.order.CartDto;
+import com.kirangajul.orderservice.dto.order.OrderDto;
+import com.kirangajul.orderservice.dto.user.UserDto;
+import com.kirangajul.orderservice.entity.Cart;
+import com.kirangajul.orderservice.entity.Order;
 
 public interface CartMappingHelper {
     static CartDto map( Cart cart) {

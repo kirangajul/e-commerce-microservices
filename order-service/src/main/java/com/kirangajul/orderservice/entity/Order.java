@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.entity;
+package com.kirangajul.orderservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -8,8 +8,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.hoangtien2k3.orderservice.constrant.AppConstant;
-import com.hoangtien2k3.orderservice.dto.product.ProductDto;
+import com.kirangajul.orderservice.constrant.AppConstant;
+import com.kirangajul.orderservice.dto.product.ProductDto;
+
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

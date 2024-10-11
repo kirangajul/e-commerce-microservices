@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.config.kafka;
+package com.kirangajul.userservice.config.kafka;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,13 +1,13 @@
-package com.hoangtien2k3.userservice.exception.payload;
+package com.kirangajul.userservice.exception.payload;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
-import com.hoangtien2k3.userservice.constant.AppConstant;
 import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.kirangajul.userservice.constant.AppConstant;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

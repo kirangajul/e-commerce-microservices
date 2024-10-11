@@ -1,12 +1,14 @@
-package com.hoangtien2k3.userservice.service;
+package com.kirangajul.userservice.service;
 
-import com.hoangtien2k3.userservice.model.dto.request.ChangePasswordRequest;
-import com.hoangtien2k3.userservice.model.dto.request.Login;
-import com.hoangtien2k3.userservice.model.dto.request.SignUp;
-import com.hoangtien2k3.userservice.model.dto.request.UserDto;
-import com.hoangtien2k3.userservice.model.dto.response.JwtResponseMessage;
-import com.hoangtien2k3.userservice.model.entity.User;
 import org.springframework.data.domain.Page;
+
+import com.kirangajul.userservice.model.dto.request.ChangePasswordRequest;
+import com.kirangajul.userservice.model.dto.request.Login;
+import com.kirangajul.userservice.model.dto.request.SignUp;
+import com.kirangajul.userservice.model.dto.request.UserDto;
+import com.kirangajul.userservice.model.dto.response.JwtResponseMessage;
+import com.kirangajul.userservice.model.entity.User;
+
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;

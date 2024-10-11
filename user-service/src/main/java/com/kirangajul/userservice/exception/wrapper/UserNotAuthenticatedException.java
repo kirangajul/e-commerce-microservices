@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.exception.wrapper;
+package com.kirangajul.userservice.exception.wrapper;
 
 public class UserNotAuthenticatedException extends RuntimeException {
     public UserNotAuthenticatedException() {

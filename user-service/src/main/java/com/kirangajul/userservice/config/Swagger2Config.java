@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.config;
+package com.kirangajul.userservice.config;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;

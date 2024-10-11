@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.config.web;
+package com.kirangajul.orderservice.config.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.config.kafka;
+package com.kirangajul.userservice.config.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;

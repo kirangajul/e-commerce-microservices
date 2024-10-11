@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.dto.product;
+package com.kirangajul.orderservice.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,12 +24,6 @@ public class CategoryDto implements Serializable {
     private String categoryTitle;
     private String imageUrl;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<CategoryDto> subCategoriesDtos;
-
-    @JsonProperty("parentCategory")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private CategoryDto parentCategoryDto;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ProductDto> productDtos;

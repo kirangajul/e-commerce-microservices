@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.entity;
+package com.kirangajul.orderservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

@@ -1,11 +1,13 @@
-package com.hoangtien2k3.orderservice.service;
+package com.kirangajul.orderservice.service;
 
-import com.hoangtien2k3.orderservice.dto.product.ProductDto;
-import com.hoangtien2k3.orderservice.dto.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.kirangajul.orderservice.dto.product.ProductDto;
+import com.kirangajul.orderservice.dto.user.UserDto;
+
 import reactor.core.publisher.Mono;
 
 @Component

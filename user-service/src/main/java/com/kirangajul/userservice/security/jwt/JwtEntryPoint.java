@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.security.jwt;
+package com.kirangajul.userservice.security.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

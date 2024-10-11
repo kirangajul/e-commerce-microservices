@@ -1,9 +1,5 @@
-package com.hoangtien2k3.inventoryservice.service;
+package com.kirangajul.inventoryservice.service;
 
-import com.hoangtien2k3.inventoryservice.dto.request.TokenValidationRequest;
-import com.hoangtien2k3.inventoryservice.dto.response.InventoryResponse;
-import com.hoangtien2k3.inventoryservice.dto.response.TokenValidationResponse;
-import com.hoangtien2k3.inventoryservice.repository.InventoryRepository;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.kirangajul.inventoryservice.dto.request.TokenValidationRequest;
+import com.kirangajul.inventoryservice.dto.response.InventoryResponse;
+import com.kirangajul.inventoryservice.dto.response.TokenValidationResponse;
+import com.kirangajul.inventoryservice.repository.InventoryRepository;
+
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -51,18 +53,16 @@ public class InventoryService {
     }
 
     public String getTokenUserService(String authorizationHeader) {
-        // Sử dụng JWT từ tiêu đề "Authorization" của yêu cầu gọi API
         String jwtToken = authorizationHeader.replace("Bearer ", "");
 
-        // Token hợp lệ, tiếp tục gọi API từ user-service
         String responseToken = webClientBuilder.baseUrl(userServiceBaseUrl + "/api/manager")
-                .build()    // chuyển WebClientBuilder -> WebClient
+                .build()    
                 .get()
-                .uri("/token")  // Endpoint
+                .uri("/token")  
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)    // title
                 .retrieve() // call HTTP and return ClientResponse
                 .bodyToMono(String.class) // transaction content ClientResponse for Mono.
-                .block();   //  Chờ cho đến khi Mono hoàn thành và trả về giá trị cuối cùng của nó.
+                .block();   
 
         return responseToken;
     }
@@ -70,7 +70,7 @@ public class InventoryService {
     @Transactional(readOnly = true)
     @SneakyThrows
     public List<InventoryResponse> isInStock(List<String> productName) {
-        log.info("Checking Inventory"); // còn hàng hay không
+        log.info("Checking Inventory");
         return inventoryRepository.findByProductNameIn(productName)
                 .stream()
                 .map(inventory ->

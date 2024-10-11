@@ -1,12 +1,13 @@
-package com.hoangtien2k3.userservice.security.userprinciple;
+package com.kirangajul.userservice.security.userprinciple;
 
-import com.hoangtien2k3.userservice.exception.wrapper.EmailOrUsernameNotFoundException;
-import com.hoangtien2k3.userservice.model.entity.User;
-import com.hoangtien2k3.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+
+import com.kirangajul.userservice.exception.wrapper.EmailOrUsernameNotFoundException;
+import com.kirangajul.userservice.model.entity.User;
+import com.kirangajul.userservice.repository.UserRepository;
 
 import javax.transaction.Transactional;
 

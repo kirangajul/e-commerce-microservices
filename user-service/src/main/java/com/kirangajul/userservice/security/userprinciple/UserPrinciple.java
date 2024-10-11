@@ -1,7 +1,8 @@
-package com.hoangtien2k3.userservice.security.userprinciple;
+package com.kirangajul.userservice.security.userprinciple;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hoangtien2k3.userservice.model.entity.User;
+import com.kirangajul.userservice.model.entity.User;
+
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;

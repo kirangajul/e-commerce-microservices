@@ -1,8 +1,5 @@
-package com.hoangtien2k3.userservice.config;
+package com.kirangajul.userservice.config;
 
-import com.hoangtien2k3.userservice.security.jwt.JwtEntryPoint;
-import com.hoangtien2k3.userservice.security.jwt.JwtTokenFilter;
-import com.hoangtien2k3.userservice.security.userprinciple.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.kirangajul.userservice.security.jwt.JwtEntryPoint;
+import com.kirangajul.userservice.security.jwt.JwtTokenFilter;
+import com.kirangajul.userservice.security.userprinciple.UserDetailService;
 
 @Configuration
 @EnableWebSecurity

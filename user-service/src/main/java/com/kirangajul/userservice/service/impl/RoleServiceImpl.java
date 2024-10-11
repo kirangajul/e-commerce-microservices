@@ -1,15 +1,16 @@
-package com.hoangtien2k3.userservice.service.impl;
+package com.kirangajul.userservice.service.impl;
 
-import com.hoangtien2k3.userservice.exception.wrapper.RoleNotFoundException;
-import com.hoangtien2k3.userservice.exception.wrapper.UserNotFoundException;
-import com.hoangtien2k3.userservice.model.entity.Role;
-import com.hoangtien2k3.userservice.model.entity.RoleName;
-import com.hoangtien2k3.userservice.model.entity.User;
-import com.hoangtien2k3.userservice.repository.RoleRepository;
-import com.hoangtien2k3.userservice.repository.UserRepository;
-import com.hoangtien2k3.userservice.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.kirangajul.userservice.exception.wrapper.RoleNotFoundException;
+import com.kirangajul.userservice.exception.wrapper.UserNotFoundException;
+import com.kirangajul.userservice.model.entity.Role;
+import com.kirangajul.userservice.model.entity.RoleName;
+import com.kirangajul.userservice.model.entity.User;
+import com.kirangajul.userservice.repository.RoleRepository;
+import com.kirangajul.userservice.repository.UserRepository;
+import com.kirangajul.userservice.service.RoleService;
 
 import javax.transaction.Transactional;
 import java.util.*;

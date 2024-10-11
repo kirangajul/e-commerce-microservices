@@ -1,10 +1,10 @@
-package com.hoangtien2k3.userservice.service;
-
-import com.hoangtien2k3.userservice.model.entity.Role;
-import com.hoangtien2k3.userservice.model.entity.RoleName;
+package com.kirangajul.userservice.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.kirangajul.userservice.model.entity.Role;
+import com.kirangajul.userservice.model.entity.RoleName;
 
 public interface RoleService {
     Optional<Role> findByName(RoleName name);

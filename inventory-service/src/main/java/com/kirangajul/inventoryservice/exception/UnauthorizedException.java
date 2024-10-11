@@ -1,4 +1,4 @@
-package com.hoangtien2k3.inventoryservice.exception;
+package com.kirangajul.inventoryservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

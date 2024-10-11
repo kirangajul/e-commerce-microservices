@@ -1,7 +1,5 @@
-package com.hoangtien2k3.orderservice.api;
+package com.kirangajul.orderservice.api;
 
-import com.hoangtien2k3.orderservice.dto.order.OrderDto;
-import com.hoangtien2k3.orderservice.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import com.kirangajul.orderservice.dto.order.OrderDto;
+import com.kirangajul.orderservice.service.OrderService;
+
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;

@@ -1,9 +1,10 @@
-package com.hoangtien2k3.orderservice.dto.order;
+package com.kirangajul.orderservice.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.kirangajul.orderservice.dto.user.UserDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hoangtien2k3.orderservice.dto.user.UserDto;
+
 import lombok.*;
 
 import java.io.Serial;
@@ -22,7 +23,7 @@ public class CartDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer cartId;
-    private Long userId;
+    private Long userId; 
 
     @JsonProperty("order")
     @JsonInclude(Include.NON_NULL)

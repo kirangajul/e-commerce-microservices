@@ -1,4 +1,4 @@
-package com.hoangtien2k3.inventoryservice.dto.request;
+package com.kirangajul.inventoryservice.dto.request;
 
 public class TokenValidationRequest {
     private String accessToken;

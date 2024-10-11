@@ -1,6 +1,5 @@
-package com.hoangtien2k3.userservice.security.jwt;
+package com.kirangajul.userservice.security.jwt;
 
-import com.hoangtien2k3.userservice.security.userprinciple.UserDetailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.kirangajul.userservice.security.userprinciple.UserDetailService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

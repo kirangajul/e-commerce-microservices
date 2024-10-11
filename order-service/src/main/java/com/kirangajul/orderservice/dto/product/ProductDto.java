@@ -1,8 +1,9 @@
-package com.hoangtien2k3.orderservice.dto.product;
+package com.kirangajul.orderservice.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hoangtien2k3.orderservice.dto.order.OrderDto;
+import com.kirangajul.orderservice.dto.order.OrderDto;
+
 import lombok.*;
 
 import java.io.Serial;

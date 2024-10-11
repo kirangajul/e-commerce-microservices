@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.event;
+package com.kirangajul.userservice.event;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;

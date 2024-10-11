@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.constant;
+package com.kirangajul.userservice.constant;
 
 public class KafkaConstant {
     public static final String PROFILE_ONBOARDING_TOPIC = "profileOnboarding";

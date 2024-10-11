@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.security.validate;
+package com.kirangajul.userservice.security.validate;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

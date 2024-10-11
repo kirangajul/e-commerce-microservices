@@ -1,4 +1,4 @@
-package com.hoangtien2k3.inventoryservice.config;
+package com.kirangajul.inventoryservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

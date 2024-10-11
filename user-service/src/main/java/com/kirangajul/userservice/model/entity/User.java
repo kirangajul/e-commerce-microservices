@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.model.entity;
+package com.kirangajul.userservice.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

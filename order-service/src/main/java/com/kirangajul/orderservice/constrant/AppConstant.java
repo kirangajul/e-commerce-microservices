@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.constrant;
+package com.kirangajul.orderservice.constrant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

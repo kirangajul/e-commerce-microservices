@@ -1,4 +1,4 @@
-package com.hoangtien2k3.inventoryservice;
+package com.kirangajul.inventoryservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableEurekaClient
-@ComponentScan(basePackages = "com.hoangtien2k3.inventoryservice")
+@ComponentScan(basePackages = "com.kirangajul.inventoryservice")
 public class InventoryServiceApplication {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.dto.user;
+package com.kirangajul.orderservice.dto.user;
 
 import lombok.*;
 

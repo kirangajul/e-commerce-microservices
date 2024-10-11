@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.config;
+package com.kirangajul.userservice.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

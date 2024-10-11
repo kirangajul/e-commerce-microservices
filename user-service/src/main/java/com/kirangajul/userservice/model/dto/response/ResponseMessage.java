@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.model.dto.response;
+package com.kirangajul.userservice.model.dto.response;
 
 import lombok.*;
 

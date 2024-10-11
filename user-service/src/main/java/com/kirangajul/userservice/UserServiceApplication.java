@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice;
+package com.kirangajul.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

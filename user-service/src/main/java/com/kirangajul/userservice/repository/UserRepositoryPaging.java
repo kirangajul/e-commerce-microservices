@@ -1,9 +1,10 @@
-package com.hoangtien2k3.userservice.repository;
+package com.kirangajul.userservice.repository;
 
-import com.hoangtien2k3.userservice.model.entity.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import com.kirangajul.userservice.model.entity.User;
 
 import java.util.List;
 

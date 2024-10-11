@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.model.dto.model;
+package com.kirangajul.userservice.model.dto.model;
 
 import lombok.Getter;
 import lombok.Setter;

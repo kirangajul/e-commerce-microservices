@@ -1,4 +1,4 @@
-package com.hoangtien2k3.userservice.constant;
+package com.kirangajul.userservice.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

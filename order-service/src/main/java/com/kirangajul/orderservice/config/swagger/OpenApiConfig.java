@@ -1,4 +1,4 @@
-package com.hoangtien2k3.orderservice.config.swagger;
+package com.kirangajul.orderservice.config.swagger;
 
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;

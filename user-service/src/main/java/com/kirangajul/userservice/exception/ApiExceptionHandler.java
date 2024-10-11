@@ -1,7 +1,5 @@
-package com.hoangtien2k3.userservice.exception;
+package com.kirangajul.userservice.exception;
 
-import com.hoangtien2k3.userservice.exception.payload.ExceptionMessage;
-import com.hoangtien2k3.userservice.exception.wrapper.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +12,9 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.kirangajul.userservice.exception.payload.ExceptionMessage;
+import com.kirangajul.userservice.exception.wrapper.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

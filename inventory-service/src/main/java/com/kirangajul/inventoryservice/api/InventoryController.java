@@ -1,13 +1,14 @@
-package com.hoangtien2k3.inventoryservice.api;
+package com.kirangajul.inventoryservice.api;
 
-import com.hoangtien2k3.inventoryservice.dto.response.InventoryResponse;
-import com.hoangtien2k3.inventoryservice.security.JwtValidate;
-import com.hoangtien2k3.inventoryservice.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import com.kirangajul.inventoryservice.dto.response.InventoryResponse;
+import com.kirangajul.inventoryservice.security.JwtValidate;
+import com.kirangajul.inventoryservice.service.InventoryService;
 
 import java.util.List;
 
@@ -23,10 +24,6 @@ public class InventoryController {
     @Autowired
     private final JwtValidate jwtValidate;
 
-
-    // http://localhost:8083/api/inventory/iphone_13,iphone13_red
-
-    // http://localhost:8083/api/inventory?productName=iphone_13&productName=iphone13_red
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

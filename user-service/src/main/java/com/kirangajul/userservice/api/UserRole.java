@@ -1,7 +1,5 @@
-package com.hoangtien2k3.userservice.api;
+package com.kirangajul.userservice.api;
 
-import com.hoangtien2k3.userservice.http.HeaderGenerator;
-import com.hoangtien2k3.userservice.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -12,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import com.kirangajul.userservice.http.HeaderGenerator;
+import com.kirangajul.userservice.service.RoleService;
 
 import java.util.List;
 
