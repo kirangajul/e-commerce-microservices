@@ -1,18 +1,14 @@
 package com.kirangajul.productservice.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import com.kirangajul.productservice.dto.CategoryDto;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
-
 public interface CategoryService {
 
-    Flux<List<CategoryDto>> findAll();
+    List<CategoryDto> findAll();
 
     Page<CategoryDto> findAllCategory(int page, int size);
     List<CategoryDto> getAllCategories(Integer pageNo, Integer pageSize, String sortBy);
@@ -21,12 +17,14 @@ public interface CategoryService {
 
     CategoryDto findById(final Integer categoryId);
 
-    Mono<CategoryDto> save(final CategoryDto categoryDto);
+    CategoryDto save(final CategoryDto categoryDto);
 
     CategoryDto update(final CategoryDto categoryDto);
 
     CategoryDto update(final Integer categoryId, final CategoryDto categoryDto);
 
     void deleteById(final Integer categoryId);
+
+	List<CategoryDto> saveAll(List<CategoryDto> categoryDtos);
 
 }

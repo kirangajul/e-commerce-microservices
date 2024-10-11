@@ -1,33 +1,33 @@
 package com.kirangajul.productservice.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-
-import com.kirangajul.productservice.dto.CategoryDto;
-import com.kirangajul.productservice.entity.Category;
-import com.kirangajul.productservice.entity.Product;
-import com.kirangajul.productservice.exception.wrapper.CategoryNotFoundException;
-import com.kirangajul.productservice.exception.wrapper.ProductNotFoundException;
-import com.kirangajul.productservice.helper.CategoryMappingHelper;
-import com.kirangajul.productservice.helper.ProductMappingHelper;
-import com.kirangajul.productservice.repository.CategoryRepository;
-import com.kirangajul.productservice.repository.CategoryRepositoryPagingAndSorting;
-import com.kirangajul.productservice.service.CategoryService;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.kirangajul.productservice.dto.CategoryDto;
+import com.kirangajul.productservice.entity.Category;
+import com.kirangajul.productservice.exception.wrapper.CategoryNotFoundException;
+import com.kirangajul.productservice.helper.CategoryMappingHelper;
+import com.kirangajul.productservice.repository.CategoryRepository;
+import com.kirangajul.productservice.repository.CategoryRepositoryPagingAndSorting;
+import com.kirangajul.productservice.service.CategoryService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Slf4j
@@ -43,22 +43,17 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepositoryPagingAndSorting categoryRepositoryPagingAndSorting;
 
     @Override
-    public Flux<List<CategoryDto>> findAll() {
+    public List<CategoryDto> findAll() {
         log.info("Category List Service, fetch all category");
-        return Flux.just(categoryRepository.findAll())
-                .flatMap(categories -> Flux.fromIterable(categories)
-                                .map(CategoryMappingHelper::map)
-                                .distinct()
-                                .collectList()
-                )
-                .map(categoryDtos -> {
-                    log.info("Categories fetched successfully");
-                    return categoryDtos;
-                })
-                .onErrorResume(throwable -> {
-                    log.error("Error while fetching categories: " + throwable.getMessage());
-                    return Mono.just(Collections.emptyList());
-                });
+        
+		try {
+		
+			return categoryRepository.findAll().stream().map(CategoryMappingHelper::map).distinct().collect(Collectors.toList());
+			
+		} catch (Exception e) {
+			log.error("Error while fetching categories: " + e.getMessage());
+			return Collections.emptyList();
+		}
     }
 
 
@@ -117,14 +112,32 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Mono<CategoryDto> save(CategoryDto categoryDto) {
+    public CategoryDto save(CategoryDto categoryDto) {
         log.info("CategoryDto, service; save category");
-        return Mono.just(categoryDto)
-                .map(CategoryMappingHelper::map)
-                .flatMap(category ->
-                        Mono.fromCallable(() -> CategoryMappingHelper.map(categoryRepository.save(category)))
-                                .onErrorMap(DataIntegrityViolationException.class, e -> new CategoryNotFoundException("Bad Request", e))
-                );
+       
+       try {
+    	   Category category = CategoryMappingHelper.map(categoryDto);
+           Category savedCategory = categoryRepository.save(category);
+           return CategoryMappingHelper.map(savedCategory);
+	} catch(DataIntegrityViolationException e) {
+		throw new CategoryNotFoundException("Error saving category: Data integrity violation", e);
+	}
+       catch (Exception e) {
+		throw new CategoryNotFoundException("Error saving category", e);
+	}
+    }
+    
+    @Override
+    public List<CategoryDto> saveAll(List<CategoryDto> categoryDtos) {
+      try {
+		
+    	  List<Category> categories = categoryDtos.stream().map(CategoryMappingHelper::map).collect(Collectors.toList());
+    	  List<Category> savedCategories = categoryRepository.saveAll(categories);
+    	  return savedCategories.stream().map(CategoryMappingHelper::map).collect(Collectors.toList());
+	} catch (Exception e) {
+		log.error("Error while saving categories: " + e.getMessage());
+		return Collections.emptyList();
+	}
     }
 
     @Override

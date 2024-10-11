@@ -1,7 +1,5 @@
 package com.kirangajul.productservice.helper;
 
-import java.util.Optional;
-
 import com.kirangajul.productservice.dto.CategoryDto;
 import com.kirangajul.productservice.entity.Category;
 

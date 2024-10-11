@@ -1,12 +1,14 @@
 package com.kirangajul.productservice.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-
 import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +27,10 @@ public class ProductDto implements Serializable {
     private Double priceUnit;
     private Integer quantity;
 
-    @JsonProperty("category")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonBackReference
-    private CategoryDto categoryDto;
+//    @JsonProperty("category")
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @JsonBackReference
+//    private CategoryDto categoryDto;
+    private Integer categoryId;
 
 }

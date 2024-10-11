@@ -42,7 +42,7 @@ public final class Product extends AbstractMappedEntity implements Serializable 
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
 }

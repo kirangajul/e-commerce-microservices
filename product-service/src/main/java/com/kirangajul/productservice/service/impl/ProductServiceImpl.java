@@ -1,28 +1,27 @@
 package com.kirangajul.productservice.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.kirangajul.productservice.dto.CategoryDto;
 import com.kirangajul.productservice.dto.ProductDto;
 import com.kirangajul.productservice.entity.Category;
 import com.kirangajul.productservice.entity.Product;
 import com.kirangajul.productservice.exception.wrapper.ProductNotFoundException;
-import com.kirangajul.productservice.helper.CategoryMappingHelper;
 import com.kirangajul.productservice.helper.ProductMappingHelper;
+import com.kirangajul.productservice.repository.CategoryRepository;
 import com.kirangajul.productservice.repository.ProductRepository;
 import com.kirangajul.productservice.service.ProductService;
 
-import reactor.core.publisher.Flux;
-
-import javax.swing.text.html.Option;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Slf4j
@@ -30,98 +29,115 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private final ProductRepository productRepository;
+	@Autowired
+	private final ProductRepository productRepository;
 
-    @Override
-    public Flux<List<ProductDto>> findAll() {
-        log.info("ProductDto List, service, fetch all products");
-        return Flux.defer(() -> {
-                    List<ProductDto> productDtos = productRepository.findAll()
-                            .stream()
-                            .map(ProductMappingHelper::map)
-                            .distinct()
-                            .toList();
-                    return Flux.just(productDtos);
-                })
-                .onErrorResume(throwable -> {
-                    log.error("Error while fetching products: " + throwable.getMessage());
-                    return Flux.empty();
-                });
-    }
+	@Autowired
+	private final CategoryRepository categoryRepository;
 
-    @Override
-    public ProductDto findById(Integer productId) {
-        log.info("ProductDto, service; fetch product by id");
-        return productRepository.findById(productId)
-                .map(ProductMappingHelper::map)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Product with id[%d] not found", productId)));
-    }
+	@Override
+	public List<ProductDto> findAll() {
+		log.info("ProductDto List, service, fetch all products");
+		try {
+			List<ProductDto> productDtos = productRepository.findAll().stream().map(ProductMappingHelper::map)
+					.distinct().collect(Collectors.toList());
+			return productDtos;
+		} catch (Exception e) {
+			log.error("Error while fetching products: " + e.getMessage());
+			return Collections.emptyList();
+		}
+	}
 
-    @Override
-    public ProductDto save(ProductDto productDto) {
-        log.info("ProductDto, service; save product");
-        try {
-            return ProductMappingHelper.map(productRepository.save(ProductMappingHelper.map(productDto)));
-        } catch (DataIntegrityViolationException e) {
-            log.error("Error saving product: Data integrity violation", e);
-            throw new ProductNotFoundException("Error saving product: Data integrity violation", e);
-        } catch (Exception e) {
-            log.error("Error saving product", e);
-            throw new ProductNotFoundException("Error saving product", e);
-        }
-    }
+	@Override
+	public ProductDto findById(Integer productId) {
+		log.info("ProductDto, service; fetch product by id");
+		return productRepository.findById(productId).map(ProductMappingHelper::map).orElseThrow(
+				() -> new ProductNotFoundException(String.format("Product with id[%d] not found", productId)));
+	}
 
-    @Override
-    public ProductDto update(ProductDto productDto) {
-        log.info("ProductDto, service; update product");
+	@Override
+	public ProductDto save(ProductDto productDto) {
+		log.info("ProductDto, service; save product");
+		try {
+			Product product = ProductMappingHelper.map(productDto); // Convert ProductDto to Product entity
+			Product savedProduct = productRepository.save(product); // Save product synchronously
+			return ProductMappingHelper.map(savedProduct); // Convert saved Product entity back to ProductDto
+		} catch (DataIntegrityViolationException e) {
+			throw new ProductNotFoundException("Error saving product: Data integrity violation", e);
+		} catch (Exception e) {
+			throw new ProductNotFoundException("Error saving product", e);
+		}
+	}
 
-        Product existingProduct = productRepository.findById(productDto.getProductId())
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productDto.getProductId()));
+	@Override
+	public List<ProductDto> saveAll(List<ProductDto> productDtos) {
+		log.info("ProductDto List, service; save all products");
+		try {
+			List<Product> products = productDtos.stream().map(ProductMappingHelper::map).collect(Collectors.toList());
+			List<Product> savedProducts = productRepository.saveAll(products);
+			return savedProducts.stream().map(ProductMappingHelper::map).collect(Collectors.toList());
+		} catch (Exception e) {
+			log.error("Error while saving products: " + e.getMessage());
+			return Collections.emptyList();
+		}
+	}
 
-        BeanUtils.copyProperties(productDto, existingProduct, "productId", "categoryDto");
+	@Override
+	public ProductDto update(ProductDto productDto) {
+	    log.info("ProductDto, service; update product");
 
-        if (productDto.getCategoryDto() != null) {
-            existingProduct.setCategory(CategoryMappingHelper.map(productDto.getCategoryDto()));
-        }
+	    Product existingProduct = productRepository.findById(productDto.getProductId())
+	            .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productDto.getProductId()));
 
-        Product updatedProduct = productRepository.save(existingProduct);
+	    BeanUtils.copyProperties(productDto, existingProduct, "productId", "category");
 
-        return ProductMappingHelper.map(updatedProduct);
-    }
+	    if (productDto.getCategoryId() != null) {
+	        Category category = categoryRepository.findById(productDto.getCategoryId())
+	                .orElseThrow(() -> new ProductNotFoundException("Category not found with id: " + productDto.getCategoryId()));
+	        existingProduct.setCategory(category);
+	    }
 
-    @Override
-    public ProductDto update(Integer productId, ProductDto productDto) {
-        log.info("ProductDto, service; update product with productId");
+	    Product updatedProduct = productRepository.save(existingProduct);
 
-        // Check Product Exists in DB
-        Product existingProduct = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+	    return ProductMappingHelper.map(updatedProduct);
+	}
 
-        // Update Product using BeanUtils.copyProperties
-        BeanUtils.copyProperties(productDto, existingProduct, "productId", "category");
 
-//        // Or Using Model Mapper Create a ModelMapper instance
-//        ModelMapper modelMapper = new ModelMapper();
-//
-//        // Map properties from productDto to existingProduct
-//        modelMapper.map(productDto, existingProduct);
+	@Override
+	public ProductDto update(Integer productId, ProductDto productDto) {
+		log.info("ProductDto, service; update product with productId");
 
-        // If categoryDto is not null, map it to Category
-        if (productDto.getCategoryDto() != null) {
-            existingProduct.setCategory(CategoryMappingHelper.map(productDto.getCategoryDto()));
-        }
+		// Find existing product or throw exception if not found
+		Product existingProduct = productRepository.findById(productId)
+				.orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
-        // Save to Database
-        Product updatedProduct = productRepository.save(existingProduct);
+		// Copy properties from DTO to existing product entity, except 'productId' and
+		// 'category'
+		BeanUtils.copyProperties(productDto, existingProduct, "productId", "category");
 
-        return ProductMappingHelper.map(updatedProduct);
-    }
+		// Update category if provided
+		if (productDto.getCategoryId() != null) {
+			Category category = Category.builder().categoryId(productDto.getCategoryId()).build();
+			existingProduct.setCategory(category);
+		}
 
-    @Override
-    public void deleteById(Integer productId) {
-        log.info("Void, service; delete product by id");
-        this.productRepository.delete(ProductMappingHelper.map(this.findById(productId)));
-    }
+		// Save updated product entity
+		Product updatedProduct = productRepository.save(existingProduct);
+
+		// Map updated product entity back to DTO
+		return ProductMappingHelper.map(updatedProduct);
+	}
+
+	@Override
+	public Boolean deleteById(Integer productId) {
+		log.info("Void, service; delete product by id");
+
+		Product existingProduct = productRepository.findById(productId)
+				.orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+
+		productRepository.delete(existingProduct);
+
+		return true;
+	}
 
 }
